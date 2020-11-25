@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>天气</title>
+    <script src="../static/jq/jquery-2.1.0.js"></script>
+    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+    <script>
+        function login_val()
+        {
+            var c = $('#id1 option:selected').val();
+            var y = $('#id2 option:selected').val();
+            var m = $('#id3 option:selected').val();
+            $("#tbody1").empty();
+
+                $.ajax({
+                    type:"post",
+                    url : "/tijiao/",
+                    data:
+                    {
+                        "city":c,
+                        "yer":y,
+                        "mon":m
+                    },
+                    dataType:"json",
+                    success:function (data)
+                    {
+                        console.log("数据提交成功"+data.li);
+                        data.li.forEach(function (a) {
+                            $("tbody").append(
+                                "<tr>" +
+                                "<td>" + a.city + "</td>" +
+                                "<td>" + a.ymd + "</td>" +
+                                "<td>" + a.tianqi + "</td>" +
+                                "<td>" + a.bWendu + "</td>" +
+                                "<td>" + a.yWendu + "</td>" +
+                                "<td>" + a.fenli + "</td>" +
+                                "<td>" + a.fenxiang + "</td>" +
+                                "</tr>"
+                            )
+                        })
+                    }
+                })
+        }
+    </script>
+    <style>
+        #div0{
+            width: 100%;
+            height: 100%;
+
+        }
+        select{
+            background-color:transparent;
+        }
+        option{
+            font-family: 华文仿宋;
+            font-size: 20px;
+        }
+        #div1{
+            margin-top: -7px;
+            line-height: 78px;
+            height: 80px;
+        }
+
+        .c1{
+            align-content: center;
+            height: 40px;
+            width: 120px;
+        }
+        #id1{
+            margin-left: 37%;
+        }
+        tr{
+            align-content: center;
+        }
+        table{
+            width: 1000px;
+            border-collapse:collapse;
+            border:1px black solid;
+        }
+        tr{
+            font-size: 30px;
+            text-align: center;
+            font-family: 华文仿宋;
+        }
+        h1{
+            text-align: center;
+            font-size: 40px;
+            font-family: 华文琥珀;
+            margin-bottom: -7px;
+            margin-top: -7px;
+        }
+        body{
+            margin-left: 0px;
+            margin-right: 0px;
+            margin-bottom: 0px;
+            background-image: url("../static/img/3.jpg");
+        }
+        #div2{
+            height: 1478px;
+        }
+    </style>
+</head>
+<body>
+<div id="div0">
+    <h1>天气情况</h1>
+    <div id="div1" onchange="login_val()">
+        <select id="id1" class="c1">
+            <option value="西安">请选择地址</option>
+            {% for i in li %}
+                <option value="{{ i }}">{{ i }}</option>
+            {% endfor %}
+        </select>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <select id="id2" class="c1">
+            <option value="2017">请选择年份</option>
+            <option value="2017">2017年</option>
+            <option value="2018">2018年</option>
+        </select>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+        <select id="id3" class="c1">
+            <option value="01">请选择月份</option>
+            <option value="01">1月</option>
+            <option value="02">2月</option>
+            <option value="03">3月</option>
+            <option value="04">4月</option>
+            <option value="05">5月</option>
+            <option value="06">6月</option>
+            <option value="07">7月</option>
+            <option value="08">8月</option>
+            <option value="09">9月</option>
+            <option value="10">10月</option>
+            <option value="11">11月</option>
+            <option value="12">12月</option>
+        </select>
+    </div>
+
+    <div id="div2">
+        <table align="center" border="1px">
+            <thead>
+                <tr>
+                    <th>城市</th>
+                    <th>日期</th>
+                    <th>天气</th>
+                    <th>最高温度</th>
+                    <th>最低温度</th>
+                    <th>风力</th>
+                    <th>持续风向</th>
+                </tr>
+            </thead>
+            <tbody id="tbody1">
+
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>
