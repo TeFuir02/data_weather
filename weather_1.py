@@ -24,17 +24,19 @@ class Data_weather(db.Model):
 
 @app.route("/")
 def index():
-    city = Data_weather.query.all()
-    # print("----",city)
+    # city = Data_weather.query.all()
+    # li = []
+    # for i in city:
+    #     li.append(i.city)
+    # li = set(li)
+
+    city = db.session.query(Data_weather.city).distinct().all()
     li = []
     for i in city:
-        li.append(i.city)
-    li = set(li)
-    # dd = []
-    # for j in li:
-    #     dd.append({"city":j})
-    # print(dd)
-    return render_template("index.html",li = li)
+        j = str(i).replace("('","").replace("',)","")
+        li.append(j)
+    # print(li)
+    return render_template("index.html",li=li)
 
 class LoginView(Resource):
     city = '西安'
@@ -63,7 +65,7 @@ class LoginView(Resource):
         # print(weather)
         li=[]
         for i in range(len(weather)):
-            print(weather[i])
+            # print(weather[i])
             li.append(
                 {'id':weather[i].id,'city':weather[i].city,'ymd':weather[i].ymd,
                  'tianqi':weather[i].tianqi,'bWendu':weather[i].bWendu,'yWendu':weather[i].yWendu,
